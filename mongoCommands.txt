@@ -1,0 +1,116 @@
+//////////////  MongoImport /////////////////
+
+at the terminal prompt $ (not at mongosh)
+mongoimport -d SDC -c <collection name> --type csv --headerline --file <path>
+
+//for questions
+mongoimport  -d SDC -c questions --type csv --headerline --file /Users/MaryAnn/Downloads/questions.csv
+approximately 4 min
+
+//for answers
+mongoimport  -d SDC -c answers --type csv --headerline --file /Users/MaryAnn/Downloads/answers.csv
+approximately 5 min
+
+//for photos
+mongoimport  -d SDC -c photos --type csv --headerline --file /Users/MaryAnn/Downloads/answers_photos.csv
+
+////////////// $rename ///////////////////////
+
+//for answers
+db.answers.updateMany( {}, { $rename: { "helpful": "helpfulness" ,  "date_written": "date" } } )
+approximately 2 min
+
+//for questions
+db.questions.updateMany( {}, { $rename: { "id": "question_id", "body": "question_body", "date_written": "question_date", "helpful": "question_helpfulness" } } )
+approximately 1 min
+
+////////////// Reformatting data types for Date and Reported /////////////////////
+
+//updating reported to Boolean in answers
+//approximately 6 min
+
+var pipeline = [
+{"$set": {
+"reported": {"$toBool": "$reported"}
+}},
+{"$merge": {
+"into": "answers",
+}}]
+
+db.answers.aggregate(pipeline)
+
+//note, you can merge into the collection you are updating (rather than creating a new collection with the new data types)
+
+//updating date to date format in answers
+//approximately 5 min
+
+
+var pipeline = [
+{"$set": {
+"date": {"$toDate": "$date"}
+}},
+{"$merge": {
+"into": "answers",
+}}]
+
+db.answers.aggregate(pipeline)
+
+///////////repeat reformatting data types steps for questions20
+
+//updating reported to Boolean in questions
+approximately 3 min
+
+var pipeline = [
+{"$set": {
+"reported": {"$toBool": "$reported"}
+}},
+{"$merge": {
+"into": "questions",
+}}]
+
+db.questions.aggregate(pipeline)
+db.questions.find().pretty()
+
+
+//updating date to date format in questions
+approximately 3 min
+
+var pipeline = [
+{"$set": {
+"question_date": {"$toDate": "$question_date"}
+}},
+{"$merge": {
+"into": "questions",
+}}]
+
+db.questions.aggregate(pipeline)
+db.questions.find().pretty()
+
+
+//////////////////  Transformation of 3 Collections into 1 final Collection ///////////////
+
+The 3 initial collections are now clean (headers renamed, data types reformatted)
+
+////// Embedding photos array within Answers collection ///////
+
+//  Create index in photos
+db.photos.createIndex( { answer_id: 1 })
+
+// $lookup and $out
+// approximately 2.5 min
+
+var pipeline = [{$lookup: { from: "photos", localField: "id", foreignField: "answer_id", as: "photos"}}, {$out: "answers"}]
+db.answers.aggregate(pipeline)
+db.answers.find().pretty()
+
+////// Embedding answers array within Questions collection ///////
+
+//  Create index in answers
+db.answers.createIndex( { question_id: 1 })
+
+// $lookup and $out
+approximately 2 min
+
+var pipeline = [{$lookup: { "from": "answers", "localField": "question_id", "foreignField": "question_id", "as": "answers"}}, {$out: "questions"}]
+db.questions.aggregate(pipeline)
+db.questions.find().pretty()
