@@ -2,6 +2,7 @@ const express = require('express');
 const {
   retrieveQuestionsByProductId,
   retrieveAnswersByQuestionID,
+  addQuestion,
   markQuestionAsHelpful,
   reportQuestion
  } = require('./controllers/questions')
@@ -32,13 +33,12 @@ app.get('/questions/:question_id/answers', (req, res) => {
   retrieveAnswersByQuestionID(req, res)
 });
 
-// ADD A QUESTION
-// app.post('/questions', (req, res) => {
+// ADD QUESTION
+app.post('/questions', (req, res) => {
+  addQuestion(req, res)
+})
 
-//   res.send('got a post request')
-// })
-
-//ADD AN ANSWER
+//ADD ANSWER
 
 // MARK QUESTION AS HELPFUL
 app.put('/questions/:question_id/helpful', (req, res) => {

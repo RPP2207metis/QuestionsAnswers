@@ -7,6 +7,7 @@ exports.retrieveQuestionsByProductId = (req, res) => {
   Question.find({product_id: req.query.product_id})
   .then ( (results) => {
     res.send(results);
+
   })
   .catch( (err) => {
     console.log(err)
@@ -16,6 +17,7 @@ exports.retrieveQuestionsByProductId = (req, res) => {
 
 // GET ANSWERS
 exports.retrieveAnswersByQuestionID = (req, res) => {
+  // console.log(req.params.question_id)
 
   Question.find( {question_id: req.params.question_id}, {answers: true} )
   .then ( (results) => {
@@ -26,6 +28,27 @@ exports.retrieveAnswersByQuestionID = (req, res) => {
     console.log(err)
   });
 
+}
+
+// ADD QUESTION
+exports.addQuestion = (req, res) => {
+
+  Question.create({
+    product_id: req.query.product_id,
+    asker_name: req.body.data.asker_name,
+    asker_email: req.body.data.asker_email,
+    reported: false, //default value
+    question_body: req.body.data.question_body,
+    question_helpfulness: 0, //default value
+    answers: [] //default value
+  })
+  .then ( (results) => {
+    //console.log(results)
+    res.send('successfully posted question')
+  })
+  .catch ( (err) => {
+    console.log(err)
+  });
 }
 
 // MARK QUESTION AS HELPFUL
