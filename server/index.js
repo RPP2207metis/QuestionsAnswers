@@ -3,6 +3,7 @@ const {
   retrieveQuestionsByProductId,
   retrieveAnswersByQuestionID,
   addQuestion,
+  addAnswer,
   markQuestionAsHelpful,
   reportQuestion
  } = require('./controllers/questions')
@@ -39,6 +40,9 @@ app.post('/questions', (req, res) => {
 })
 
 //ADD ANSWER
+app.post('/questions/:question_id/answers', (req, res) => {
+  addAnswer(req, res)
+});
 
 // MARK QUESTION AS HELPFUL
 app.put('/questions/:question_id/helpful', (req, res) => {

@@ -4,7 +4,8 @@ const Question = require('../models/Question');
 // GET QUESTIONS
 exports.retrieveQuestionsByProductId = (req, res) => {
 
-  Question.find({product_id: req.query.product_id})
+  Question.find({product_id: req.query.product_id, reported: {$in: [null, false]}})
+  .select('-_id -product_id -asker_email -answers._id -answers.question_id -answers.answerer_email -answers.reported')
   .then ( (results) => {
     res.send(results);
 
@@ -20,6 +21,7 @@ exports.retrieveAnswersByQuestionID = (req, res) => {
   // console.log(req.params.question_id)
 
   Question.find( {question_id: req.params.question_id}, {answers: true} )
+  .select('-answers._id -answers.question_id -answers.answerer_email -answers.reported')
   .then ( (results) => {
     // console.log(results[0].answers)
     res.send(results[0].answers);
@@ -49,6 +51,33 @@ exports.addQuestion = (req, res) => {
   .catch ( (err) => {
     console.log(err)
   });
+}
+
+// ADD ANSWER
+exports.addAnswer = (req, res) => {
+  console.log(req.params.question_id, 'line 56')
+  console.log(req.body.data, 'line 57')
+
+  Question.updateOne(
+    {question_id: req.params.question_id},
+    {$push: {answers: {
+      'question_id': req.params.question_id,
+      'body': req.body.data.body,
+      'answerer_name': req.body.data.answerer_name,
+      'answerer_email': req.body.data.answerer_email,
+      'reported': false,
+      'helpfulness': 0,
+      'date': new Date(),
+      'photos': []
+    }}}
+  )
+  .then ( (results) => {
+    console.log(results, 'line 71');
+    res.send(results)
+  })
+  .catch ( (err) => {
+    console.log(err)
+  })
 }
 
 // MARK QUESTION AS HELPFUL
