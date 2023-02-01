@@ -100,7 +100,6 @@ exports.addAnswer = (req, res) => {
 
 // MARK QUESTION AS HELPFUL
 exports.markQuestionAsHelpful = (req, res) => {
-
   Question.findOneAndUpdate({question_id: req.params.question_id}, {$inc: {'question_helpfulness': 1}})
   .then ( (results) => {
     res.send(results)
