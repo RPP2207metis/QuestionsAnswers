@@ -52,18 +52,18 @@ exports.retrieveAnswersByQuestionID = (req, res) => {
 
 // ADD QUESTION
 exports.addQuestion = (req, res) => {
-
+  console.log(req.body, 'line 55')
   Question.create({
     product_id: req.query.product_id,
-    asker_name: req.body.data.asker_name,
-    asker_email: req.body.data.asker_email,
+    asker_name: req.body.name,
+    asker_email: req.body.email,
     reported: false, //default value
-    question_body: req.body.data.question_body,
+    question_body: req.body.body,
     question_helpfulness: 0, //default value
     answers: [] //default value
   })
   .then ( (results) => {
-    //console.log(results)
+    console.log(results)
     res.send('successfully posted question')
   })
   .catch ( (err) => {
@@ -91,7 +91,7 @@ exports.addAnswer = (req, res) => {
   )
   .then ( (results) => {
     console.log(results, 'line 71');
-    res.send(results)
+    res.send('answer posted')
   })
   .catch ( (err) => {
     console.log(err)
