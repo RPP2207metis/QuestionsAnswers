@@ -25,32 +25,32 @@ mongoose.connect(mongoDB)
 })
 
 // LIST QUESTIONS
-app.get('/questions', (req, res) => {
+app.get('/qa/questions', (req, res) => {
   retrieveQuestionsByProductId(req, res)
 });
 
 // ANSWERS LIST
-app.get('/questions/:question_id/answers', (req, res) => {
+app.get('/qa/questions/:question_id/answers', (req, res) => {
   retrieveAnswersByQuestionID(req, res)
 });
 
 // ADD QUESTION
-app.post('/questions', (req, res) => {
+app.post('/qa/questions', (req, res) => {
   addQuestion(req, res)
 })
 
 //ADD ANSWER
-app.post('/questions/:question_id/answers', (req, res) => {
+app.post('/qa/questions/:question_id/answers', (req, res) => {
   addAnswer(req, res)
 });
 
 // MARK QUESTION AS HELPFUL
-app.put('/questions/:question_id/helpful', (req, res) => {
+app.put('/qa/questions/:question_id/helpful', (req, res) => {
   markQuestionAsHelpful(req, res)
 })
 
 //REPORT QUESTION
-app.put('/questions/:question_id/report', (req, res) => {
+app.put('/qa/questions/:question_id/report', (req, res) => {
   reportQuestion(req, res)
 })
 
