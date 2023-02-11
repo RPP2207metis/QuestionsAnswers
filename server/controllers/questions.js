@@ -11,8 +11,8 @@ exports.retrieveQuestionsByProductId = (req, res) => {
       product_id: req.query.product_id,
       results: results
     }
-    console.log(resultsObj, 'line 10 controllers')
-    res.send(resultsObj);
+    // console.log(resultsObj, 'line 10 controllers')
+    res.status(200).send(resultsObj);
   })
   .catch( (err) => {
     console.log(err)
@@ -102,7 +102,7 @@ exports.addAnswer = (req, res) => {
 exports.markQuestionAsHelpful = (req, res) => {
   Question.findOneAndUpdate({question_id: req.params.question_id}, {$inc: {'question_helpfulness': 1}})
   .then ( (results) => {
-    res.send(results)
+    res.status(200).send(results)
   })
   .catch ( (err) => {
     console.log(err)
