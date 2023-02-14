@@ -43,8 +43,8 @@ describe('Test the GET Questions route', () => {
 describe('Test PUT Mark Questions as Helpul route', () => {
   it('should respond with 200 for the PUT request', async () => {
     // const response = await request(app).put('http://localhost:8080/qa/questions/?question_id=5/helpful');
-    const response = await request('http://localhost:8080').put('/qa/questions?question_id=5/helpful')
-    .field("helpfulness": +1);
+    const response = await request('http://localhost:8080').put('/qa/questions/5/helpful')
+    // .field("helpfulness": +1);
     console.log(response.statusCode)
     expect(response.statusCode).toBe(200);
   })

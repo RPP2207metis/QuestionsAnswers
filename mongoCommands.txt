@@ -114,3 +114,13 @@ approximately 2 min
 var pipeline = [{$lookup: { "from": "answers", "localField": "question_id", "foreignField": "question_id", "as": "answers"}}, {$out: "questions"}]
 db.questions.aggregate(pipeline)
 db.questions.find().pretty()
+
+
+
+///////////////////////////
+
+db.runCommand({connectionStatus : 1}).authInfo.authenticatedUsers
+
+db.createUser({user: "user", pwd: "password", roles: [{role: "readWrite", db: "SDC"}]})
+
+db.auth("user", passwordPrompt())

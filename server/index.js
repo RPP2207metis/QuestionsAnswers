@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const {
   retrieveQuestionsByProductId,
@@ -8,20 +9,24 @@ const {
   reportQuestion
  } = require('./controllers/questions')
 
+
 const app = express();
 app.use(express.json());
-
 
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
-const mongoDB = 'mongodb://localhost/SDC'
+const mongoDB = process.env.DATABASE_URL
 mongoose.connect(mongoDB)
 .then( () => {
   console.log('database connection successful!');
 })
 .catch ( (err) => {
   console.log(err);
+})
+
+app.get('/hb', (req, res) => {
+  console.log('working')
 })
 
 // LIST QUESTIONS
@@ -54,8 +59,14 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
   reportQuestion(req, res)
 })
 
+// app.get(`/loaderio-d9da2cf15d34431d97bfc3ab21ffec9c/`, (req, res) => {
+//   // access the loader.io token file
+//   res.send('loaderio-d9da2cf15d34431d97bfc3ab21ffec9c')
+// });
 
 app.listen(8080, () => {
   console.log('listening on port 8080')
 })
+
+
 
