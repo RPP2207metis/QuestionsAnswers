@@ -1,3 +1,4 @@
+require('newrelic');
 require('dotenv').config();
 const express = require('express');
 const {
@@ -17,6 +18,7 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
 const mongoDB = process.env.DATABASE_URL
+console.log(typeof mongoDB, 'line 21')
 mongoose.connect(mongoDB)
 .then( () => {
   console.log('database connection successful!');
@@ -25,8 +27,8 @@ mongoose.connect(mongoDB)
   console.log(err);
 })
 
-app.get('/hb', (req, res) => {
-  console.log('working')
+app.get('/testing', (req, res) => {
+  console.log('local working')
 })
 
 // LIST QUESTIONS
@@ -59,10 +61,10 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
   reportQuestion(req, res)
 })
 
-// app.get(`/loaderio-d9da2cf15d34431d97bfc3ab21ffec9c/`, (req, res) => {
-//   // access the loader.io token file
-//   res.send('loaderio-d9da2cf15d34431d97bfc3ab21ffec9c')
-// });
+app.get(`/loaderio-81a86f335658baffe63c49672afdef57/`, (req, res) => {
+  // access the loader.io token file
+  res.send('loaderio-81a86f335658baffe63c49672afdef57')
+});
 
 app.listen(8080, () => {
   console.log('listening on port 8080')

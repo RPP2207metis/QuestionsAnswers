@@ -117,10 +117,47 @@ db.questions.find().pretty()
 
 
 
-///////////////////////////
+////////////  CREATE USER  ///////////////
 
 db.runCommand({connectionStatus : 1}).authInfo.authenticatedUsers
 
 db.createUser({user: "user", pwd: "password", roles: [{role: "readWrite", db: "SDC"}]})
 
 db.auth("user", passwordPrompt())
+
+
+
+////////////  INDEX COMMANDS ///////////////////
+
+
+db.questions.getIndexes()
+
+db.questions.dropIndex(<name>)
+db.questions.dropIndex("question_id_1")
+db.questions.dropIndex("product_id_1")
+
+db.questions.createIndex({product_id: 1})
+db.questions.createIndex({question_id: 1})
+
+/////////  MONGO STOP RESTART COMMANDS FROM UBUNTU //////////////
+
+sudo systemctl status mongod
+sudo systemctl stop mongod
+sudo systemctl restart mongod
+
+
+
+/////////  SSH /////////////
+
+
+for api
+//ssh -i /Users/MaryAnn/Library/CloudStorage/OneDrive-Personal/Bootcamp/SeniorPhase/SDC/SDC_API_3.pem ubuntu@ec2-54-89-108-182.compute-1.amazonaws.com
+ssh -i /Users/MaryAnn/Library/CloudStorage/OneDrive-Personal/Bootcamp/SeniorPhase/SDC/SDC_API_3.pem ubuntu@ec2-54-165-46-41.compute-1.amazonaws.com
+
+for database
+//ssh -i /Users/MaryAnn/Library/CloudStorage/OneDrive-Personal/Bootcamp/SeniorPhase/SDC/SDC_DB_3.pem ubuntu@ec2-18-207-233-102.compute-1.amazonaws.com
+ssh -i /Users/MaryAnn/Library/CloudStorage/OneDrive-Personal/Bootcamp/SeniorPhase/SDC/SDC_DB_3.pem ubuntu@ec2-54-172-175-50.compute-1.amazonaws.com
+
+
+////////  Loader random values /////////
+%{*:1-100}
