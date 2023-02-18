@@ -61,9 +61,9 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
   reportQuestion(req, res)
 })
 
-app.get(`/loaderio-81a86f335658baffe63c49672afdef57/`, (req, res) => {
+app.get(`/loaderio/`, (req, res) => {
   // access the loader.io token file
-  res.send('loaderio-81a86f335658baffe63c49672afdef57')
+  res.send(loaderKey)
 });
 
 app.listen(8080, () => {
