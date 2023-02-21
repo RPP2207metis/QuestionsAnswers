@@ -9,7 +9,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['QuestionsAnswers'],
+  app_name: NEW_RELIC_APP_NAME,
   /**
    * Your New Relic license key.
    */

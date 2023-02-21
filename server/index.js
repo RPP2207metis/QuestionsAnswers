@@ -1,6 +1,6 @@
-require('newrelic');
 require('dotenv').config();
 const express = require('express');
+const newrelic = require('newrelic')
 const {
   retrieveQuestionsByProductId,
   retrieveAnswersByQuestionID,
